@@ -1,0 +1,69 @@
+@font-face {
+  font-family: "SuperMarioBrosNES";
+  src: url("super-mario-bros-nes.otf") format("opentype");
+}
+
+body {
+  font-family: "SuperMarioBrosNES", sans-serif;
+}
+
+#score {
+  text-align: center;
+}
+
+#game {
+  width: 600px;
+  height: 300px;
+  border: 2px solid black;
+  margin: auto;
+  background-image: url("img/mario-bg.jpg");
+  background-size: cover;
+}
+
+#mario {
+  height: 75px;
+  width: 75px;
+  top: 225px;
+  position: relative;
+  background-image: url("img/nes-mario-bros-mario-walking.gif");
+  background-size: cover;
+}
+
+#gumba {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 175px;
+  left: 550px;
+  background-image: url("img/ezgif.com-gif-maker.gif");
+  background-size: cover;
+  animation: gumba 1.33s infinite;
+}
+
+@keyframes gumba {
+  0% {
+    left: 550px;
+  }
+  100% {
+    left: -50px;
+  }
+}
+
+.jump-animation {
+  animation: jump 0.6s;
+}
+
+@keyframes jump {
+  0% {
+    top: 225px;
+  }
+  50% {
+    top: 75px;
+  }
+  80% {
+    top: 75px;
+  }
+  100% {
+    top: 225px;
+  }
+}
