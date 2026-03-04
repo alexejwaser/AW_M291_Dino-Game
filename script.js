@@ -120,8 +120,8 @@ function startLoop() {
     currentScore += 2;
     scoreEl.innerText = currentScore;
 
-    // Speed increases gradually with score (starts at 5px/tick, caps at 20px/tick)
-    const speed = Math.min(5 + currentScore / 250, 20);
+    // Speed increases gradually with score (starts at 8px/tick, caps at 20px/tick)
+    const speed = Math.min(8 + currentScore / 250, 20);
 
     // Move enemies left; when off the left edge reset them to the right
     gumbaX -= speed;
