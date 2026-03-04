@@ -24,6 +24,7 @@ body {
   background-image: url("img/mario-bg.jpg");
   background-size: cover;
   position: relative; /* needed so the overlay and milestone sit inside the game area */
+  overflow: hidden; /* hides enemies when they go off the edges */
 }
 
 #mario {
@@ -40,32 +41,20 @@ body {
   height: 50px;
   position: relative;
   top: 175px;
-  left: 550px;
+  left: 550px; /* JS moves this every tick */
   background-image: url("img/ezgif.com-gif-maker.gif");
   background-size: cover;
-  animation: gumba 1.33s infinite;
 }
 
-/* Second enemy - same as gumba but offset by half a cycle so they don't arrive together */
+/* Second enemy - starts further right so the player has time between the two enemies */
 #gumba2 {
   width: 50px;
   height: 50px;
   position: relative;
   top: 125px; /* adjusted to stay at ground level (mario 75px + gumba 50px sit above it in page flow) */
-  left: 550px;
+  left: 950px; /* JS moves this every tick */
   background-image: url("img/ezgif.com-gif-maker.gif");
   background-size: cover;
-  animation: gumba 1.33s infinite;
-  animation-delay: 0.66s; /* positive delay = starts from the right edge, half a cycle after gumba */
-}
-
-@keyframes gumba {
-  0% {
-    left: 550px;
-  }
-  100% {
-    left: -50px;
-  }
 }
 
 .jump-animation {
