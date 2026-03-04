@@ -56,7 +56,7 @@ body {
   background-image: url("img/ezgif.com-gif-maker.gif");
   background-size: cover;
   animation: gumba 1.33s infinite;
-  animation-delay: -0.66s; /* negative delay = jump in mid-cycle, creating a natural gap between enemies */
+  animation-delay: 0.66s; /* positive delay = starts from the right edge, half a cycle after gumba */
 }
 
 @keyframes gumba {
