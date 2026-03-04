@@ -7,8 +7,13 @@ body {
   font-family: "SuperMarioBrosNES", sans-serif;
 }
 
-#score {
+#score-board {
   text-align: center;
+}
+
+#score-board h1,
+#score-board h2 {
+  margin: 4px 0;
 }
 
 #game {
@@ -18,6 +23,7 @@ body {
   margin: auto;
   background-image: url("img/mario-bg.jpg");
   background-size: cover;
+  position: relative; /* needed so the overlay and milestone sit inside the game area */
 }
 
 #mario {
@@ -38,6 +44,19 @@ body {
   background-image: url("img/ezgif.com-gif-maker.gif");
   background-size: cover;
   animation: gumba 1.33s infinite;
+}
+
+/* Second enemy - same as gumba but offset by half a cycle so they don't arrive together */
+#gumba2 {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 125px; /* adjusted to stay at ground level (mario 75px + gumba 50px sit above it in page flow) */
+  left: 550px;
+  background-image: url("img/ezgif.com-gif-maker.gif");
+  background-size: cover;
+  animation: gumba 1.33s infinite;
+  animation-delay: -0.66s; /* negative delay = jump in mid-cycle, creating a natural gap between enemies */
 }
 
 @keyframes gumba {
@@ -66,4 +85,38 @@ body {
   100% {
     top: 225px;
   }
+}
+
+/* Semi-transparent overlay covering the whole game area (used for Game Over & Pause) */
+#overlay {
+  display: none; /* hidden by default; JS sets display:flex to show it */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+}
+
+/* Milestone message that briefly pops up in the top-center of the screen */
+#milestone {
+  position: absolute;
+  top: 30px;
+  width: 100%;
+  text-align: center;
+  color: yellow;
+  font-size: 22px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none; /* clicks pass through so the player can still jump */
+}
+
+#milestone.show {
+  opacity: 1;
 }

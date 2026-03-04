@@ -3,15 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Mario Run</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Sound placeholders: set src to a real audio file (e.g. "sounds/jump.mp3") to enable -->
+    <audio id="jump-sound"></audio>
+    <audio id="gameover-sound"></audio>
+
     <div id="game">
       <div id="mario"></div>
       <div id="gumba"></div>
+      <div id="gumba2"></div>
+
+      <!-- Overlay used for both Game Over and Pause screens -->
+      <div id="overlay">
+        <p id="overlay-title"></p>
+        <p id="overlay-subtitle"></p>
+      </div>
+
+      <!-- Flashes briefly when the player hits a score milestone -->
+      <div id="milestone"></div>
     </div>
-    <h1 id="score">0</h1>
+
+    <div id="score-board">
+      <h1 id="score">0</h1>
+      <h2 id="highscore">Best: 0</h2>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
