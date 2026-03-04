@@ -20,6 +20,10 @@ let isRunning = true;
 let isPaused = false;
 let gameLoop;
 
+// --- Enemy positions (pixels from the left edge of the game) ---
+let gumbaX = 550;
+let gumba2X = 950; // starts further right so the player has time before the second enemy arrives
+
 // --- Helper: play a sound (silently does nothing if no audio file is set) ---
 function playSound(sound) {
   sound.play().catch(() => {});
@@ -30,13 +34,6 @@ function jump() {
   mario.classList.add("jump-animation");
   playSound(jumpSound);
   setTimeout(() => mario.classList.remove("jump-animation"), 600);
-}
-
-// --- Speed: enemies get faster as the score rises, down to a minimum of 0.5s per cycle ---
-function updateSpeed() {
-  const speed = Math.max(0.5, 1.33 - currentScore / 500);
-  gumba.style.animationDuration = speed + "s";
-  gumba2.style.animationDuration = speed + "s";
 }
 
 // --- Milestone: show a brief flash message at certain score thresholds ---
@@ -61,8 +58,6 @@ function hideOverlay() {
 function triggerGameOver() {
   isRunning = false;
   clearInterval(gameLoop);
-  gumba.style.animationPlayState = "paused";
-  gumba2.style.animationPlayState = "paused";
   playSound(gameOverSound);
 
   if (currentScore > highScore) {
@@ -79,11 +74,9 @@ function restart() {
   scoreEl.innerText = 0;
   isRunning = true;
   isPaused = false;
+  gumbaX = 550;
+  gumba2X = 950;
   hideOverlay();
-  gumba.style.animationPlayState = "";
-  gumba2.style.animationPlayState = "";
-  gumba.style.animationDuration = "1.33s";
-  gumba2.style.animationDuration = "1.33s";
   startLoop();
 }
 
@@ -93,13 +86,9 @@ function togglePause() {
 
   if (isPaused) {
     clearInterval(gameLoop);
-    gumba.style.animationPlayState = "paused";
-    gumba2.style.animationPlayState = "paused";
     showOverlay("PAUSED", "Press Escape to resume");
   } else {
     hideOverlay();
-    gumba.style.animationPlayState = "";
-    gumba2.style.animationPlayState = "";
     startLoop();
   }
 }
@@ -126,26 +115,30 @@ document.addEventListener("click", () => {
 function startLoop() {
   gameLoop = setInterval(() => {
     const marioTop = parseInt(window.getComputedStyle(mario).getPropertyValue("top"));
-    const gumbaLeft = parseInt(window.getComputedStyle(gumba).getPropertyValue("left"));
-    const gumba2Left = parseInt(window.getComputedStyle(gumba2).getPropertyValue("left"));
 
     // Increase score each tick
     currentScore += 2;
     scoreEl.innerText = currentScore;
 
-    // Speed up enemies as score rises
-    updateSpeed();
+    // Speed increases gradually with score (starts at 8px/tick, caps at 20px/tick)
+    const speed = Math.min(8 + currentScore / 250, 20);
+
+    // Move enemies left; when off the left edge reset them to the right
+    gumbaX -= speed;
+    gumba2X -= speed;
+    if (gumbaX < -50) gumbaX = 650;
+    if (gumba2X < -50) gumba2X = 650;
+
+    // Apply the new positions
+    gumba.style.left = gumbaX + "px";
+    gumba2.style.left = gumba2X + "px";
 
     // Flash a message at score milestones
     if ([100, 500, 1000, 2000].includes(currentScore)) showMilestone(currentScore + "!");
 
-    // Hide enemies when they slide off the left edge of the screen
-    gumba.style.display = gumbaLeft < 0 ? "none" : "";
-    gumba2.style.display = gumba2Left < 0 ? "none" : "";
-
     // Collision: an enemy is at Mario's position while Mario is on the ground
-    const isHit = (enemyLeft) => enemyLeft < 50 && enemyLeft > 0 && marioTop > 150;
-    if (isHit(gumbaLeft) || isHit(gumba2Left)) triggerGameOver();
+    const isHit = (x) => x < 50 && x > 0 && marioTop > 150;
+    if (isHit(gumbaX) || isHit(gumba2X)) triggerGameOver();
   }, 50);
 }
 
