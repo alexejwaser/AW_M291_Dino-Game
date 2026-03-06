@@ -10,8 +10,25 @@
     <div id="game">
       <div id="mario"></div>
       <div id="gumba"></div>
+
+      <!-- Leben-Anzeige: 3 One-Up Icons oben links -->
+      <div id="lives">
+        <img class="life-icon" src="img/one-up.png" />
+        <img class="life-icon" src="img/one-up.png" />
+        <img class="life-icon" src="img/one-up.png" />
+      </div>
+
+      <!-- Game Over Screen (anfangs versteckt) -->
+      <div id="gameOver">
+        <p>GAME OVER</p>
+        <p id="highScoreText">HIGH SCORE: 0</p>
+        <button id="restartButton">Erneut spielen</button>
+      </div>
     </div>
     <h1 id="score">0</h1>
+    <div style="text-align: center;">
+      <button id="startButton">Start</button>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

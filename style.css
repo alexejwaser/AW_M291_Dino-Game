@@ -11,6 +11,14 @@ body {
   text-align: center;
 }
 
+#startButton {
+  font-family: "SuperMarioBrosNES", sans-serif;
+  font-size: 18px;
+  padding: 10px 30px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
 #game {
   width: 600px;
   height: 300px;
@@ -18,6 +26,53 @@ body {
   margin: auto;
   background-image: url("img/mario-bg.jpg");
   background-size: cover;
+  position: relative;
+}
+
+/* Leben-Anzeige oben links im Spielfeld */
+#lives {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+}
+
+.life-icon {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+}
+
+/* Game Over Screen: dunkle Überlagerung über dem Spielfeld */
+#gameOver {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  text-align: center;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+#gameOver p {
+  font-size: 22px;
+  margin: 10px 0;
+}
+
+#restartButton {
+  font-family: "SuperMarioBrosNES", sans-serif;
+  font-size: 14px;
+  padding: 10px 20px;
+  margin-top: 16px;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  border: 3px solid white;
 }
 
 #mario {
@@ -38,6 +93,8 @@ body {
   background-image: url("img/ezgif.com-gif-maker.gif");
   background-size: cover;
   animation: gumba 1.33s infinite;
+  /* Animation startet gestoppt */
+  animation-play-state: paused;
 }
 
 @keyframes gumba {
@@ -49,21 +106,50 @@ body {
   }
 }
 
+/* Verbesserte Sprung-Animation:
+   - Früher: Mario hielt bei 80% oben (wirkte schwimmend).
+   - Jetzt: Mario steigt schnell hoch (0-30%) und fällt dann realistisch
+     mit Schwerkraft wieder runter (30-100%). Das fühlt sich natürlicher an. */
 .jump-animation {
-  animation: jump 0.6s;
+  animation: jump 0.6s ease-in;
 }
 
 @keyframes jump {
   0% {
     top: 225px;
   }
-  50% {
-    top: 75px;
-  }
-  80% {
+  30% {
     top: 75px;
   }
   100% {
     top: 225px;
+  }
+}
+
+/* Kollisions-Animation: Mario blinkt rot bei Treffer */
+.collision-animation {
+  animation: collision 0.5s;
+}
+
+@keyframes collision {
+  0% {
+    opacity: 1;
+    filter: none;
+  }
+  25% {
+    opacity: 0.3;
+    filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(500%) hue-rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    filter: none;
+  }
+  75% {
+    opacity: 0.3;
+    filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(500%) hue-rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    filter: none;
   }
 }
